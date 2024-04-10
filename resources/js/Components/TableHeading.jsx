@@ -1,5 +1,4 @@
-import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/16/solid";
-
+import { FaSortUp, FaSortDown } from "react-icons/fa";
 export default function TableHeading({
   name,
   sortable = true,
@@ -14,7 +13,7 @@ export default function TableHeading({
         {children}
         {sortable && (
           <div>
-            <ChevronUpIcon
+            <FaSortUp
               className={
                 "w-4 " +
                 (sort_field === name && sort_direction === "asc"
@@ -22,7 +21,7 @@ export default function TableHeading({
                   : "")
               }
             />
-            <ChevronDownIcon
+            <FaSortDown
               className={
                 "w-4 -mt-2 " +
                 (sort_field === name && sort_direction === "desc"

@@ -4,6 +4,8 @@ import SelectInput from "@/Components/SelectInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import TableHeading from "@/Components/TableHeading";
+import { IoAdd } from "react-icons/io5";
+import { FaRegCheckCircle } from "react-icons/fa";
 import {
     PROJECT_STATUS_CLASS_MAP,
     PROJECT_STATUS_TEXT_MAP,
@@ -20,7 +22,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
             delete queryParams[name];
         }
 
-        router.get(route("projects.index"), queryParams);
+        router.get(route("project.index"), queryParams);
     };
 
     const onKeyPress = (name, e) => {
@@ -40,21 +42,39 @@ export default function Index({ auth, projects, queryParams = null, success }) {
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("projects.index"), queryParams);
+        router.get(route("project.index"), queryParams);
     };
 
     return (
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    Projects
-                </h2>
+                <div className="flex justify-between items-center">
+                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                        Projects
+                    </h2>
+                    <Link
+                        href={route("project.create")}
+                        className="flex items-center gap-2 bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+                    >
+                        <IoAdd size={20} />
+                        <p> Add new</p>
+                    </Link>
+                </div>
             }
         >
             <Head title="Projects" />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    {success && (
+                        <div
+                            className="flex items-center gap-2 justify-center rounded bg-emerald-500 mb-4 py-2 px-4 text-white text-center font-bold text-lg"
+                            role="alert"
+                        >
+                            <FaRegCheckCircle size={20}/>
+                            {success}
+                        </div>
+                    )}
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="overflow-auto">
@@ -66,7 +86,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                                                 colSpan={5}
                                             >
                                                 <TextInput
-                                                    className="border w-full"
+                                                    className="w-full"
                                                     defaultValue={
                                                         queryParams.name
                                                     }
@@ -201,10 +221,17 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                                                         style={{ width: 60 }}
                                                     />
                                                 </td>
-                                                <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
-                                                    {project.name}
+                                                <th className="px-3 py-2 text-nowrap text-gray-100 hover:underline cursor-pointer">
+                                                    <Link
+                                                        href={route(
+                                                            "project.show",
+                                                            project.id
+                                                        )}
+                                                    >
+                                                        {project.name}
+                                                    </Link>
                                                 </th>
-                                                <td className="px-3 py-2">
+                                                <td className="px-3 py-2 text-nowrap">
                                                     <span
                                                         className={
                                                             "px-2 py-1 rounded text-white " +
@@ -232,7 +259,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                                                 <td className="py-6 text-center flex gap-2 place-content-center">
                                                     <Link
                                                         href={route(
-                                                            "projects.edit",
+                                                            "project.edit",
                                                             project.id
                                                         )}
                                                         className="place-self-centerfont-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
@@ -241,7 +268,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                                                     </Link>
                                                     <Link
                                                         href={route(
-                                                            "projects.destroy",
+                                                            "project.destroy",
                                                             project.id
                                                         )}
                                                         className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
