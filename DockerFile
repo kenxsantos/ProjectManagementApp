@@ -1,0 +1,21 @@
+# Use an official Node runtime as a parent image
+FROM node:14
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy project files into the working directory
+COPY . .
+
+# Build the React application
+RUN npm run build
+
+# Example: Serve the built React app using a lightweight HTTP server like 'serve'
+# RUN npm install -g serve
+# CMD ["serve", "-s", "build"]
+
+# Alternatively, you might copy files to another container or prepare for deployment as needed
